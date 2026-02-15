@@ -34,6 +34,12 @@ class _MonopolioHomeState extends State<MonopolioHome> {
   }
 
   @override
+  void dispose() {
+    statsController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
       listenable: statsController,

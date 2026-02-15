@@ -63,8 +63,7 @@ class StatsController extends ChangeNotifier {
   }
 
   void incrementarFoco(double incremento) {
-    // Subimos el valor del incremento porque ahora compites contra la caída
-    nivelDeFoco = (nivelDeFoco + 0.15).clamp(0.0, 1.0);
+    nivelDeFoco = (nivelDeFoco + incremento).clamp(0.0, 1.0);
     _actualizarEstado();
     saveStats();
     notifyListeners();
@@ -83,21 +82,26 @@ class StatsController extends ChangeNotifier {
       estadoEmocional = 'Roca';
 
       if (estadoAnterior == 'Vulnerable') {
-        final ahora = DateTime.now();
-
-        historialDeEventos.insert(
-          0,
-          "${ahora.hour}:${ahora.minute}:${ahora.second} - ASCENSO A ROCA",
-        );
-
-        if (historialDeEventos.length > 20) {
-          historialDeEventos.removeLast();
-        }
-
+        _registrarEvento("ASCENSO A ROCA");
         notifyListeners();
       }
     } else {
       estadoEmocional = 'Vulnerable';
+      if (estadoAnterior == 'Roca') {
+        _registrarEvento("DEGRADACIÓN A VULNERABLE");
+        notifyListeners();
+      }
+    }
+  }
+
+  void _registrarEvento(String mensaje) {
+    final ahora = DateTime.now();
+    final timestamp =
+        "${ahora.hour.toString().padLeft(2, '0')}:${ahora.minute.toString().padLeft(2, '0')}:${ahora.second.toString().padLeft(2, '0')}";
+    historialDeEventos.insert(0, "$timestamp - $mensaje");
+
+    if (historialDeEventos.length > 20) {
+      historialDeEventos.removeLast();
     }
   }
 
