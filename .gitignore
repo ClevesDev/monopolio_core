@@ -26,12 +26,17 @@ migrate_working_dir/
 # Flutter/Dart/Pub related
 **/doc/api/
 **/ios/Flutter/.last_build_id
+.flutter-plugins
 .dart_tool/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
+.packages
 /build/
 /coverage/
+
+# It's recommended to commit pubspec.lock to ensure reproducible builds.
+# See https://dart.dev/tools/pub/glossary#lockfile
 
 # Symbolication related
 app.*.symbols
